@@ -1,0 +1,39 @@
+POST http://localhost:3333/events
+Content-Type: application/json
+
+{
+  "title": "New event",
+  "details": "test",
+  "maximumAttendees": 1
+}
+
+###
+
+POST http://localhost:3333/events/61fa8528-0dc7-4311-aea5-ad9f156f8cfe/attendees
+Content-Type: application/json
+
+{
+  "name": "Igor Adelino",
+  "email": "igoradelino12@gmail.com"
+}
+
+###
+
+GET http://localhost:3333/events/61fa8528-0dc7-4311-aea5-ad9f156f8cfe
+Content-Type: application/json
+
+###
+
+GET http://localhost:3333/attendees/1/badge
+Content-Type: application/json
+
+###
+
+GET http://localhost:3333/attendees/1/check-in
+Content-Type: application/json
+
+
+###
+
+GET http://localhost:3333/events/b29126db-d458-49cf-97f5-089574e78fdb/attendees
+Content-Type: application/json
