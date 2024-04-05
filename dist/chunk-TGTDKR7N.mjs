@@ -1,11 +1,14 @@
-import { FastifyInstance } from "fastify";
-import { ZodTypeProvider } from "fastify-type-provider-zod";
-import { z } from "zod";
-import { prisma } from "../lib/prisma";
-import { BadRequest } from "./_errors/bad-request";
+import {
+  BadRequest
+} from "./chunk-JRO4E4TH.mjs";
+import {
+  prisma
+} from "./chunk-JV6GRE7Y.mjs";
 
-export async function getAteendeeBadge(app: FastifyInstance) {
-  app.withTypeProvider<ZodTypeProvider>().get("/attendees/:attendeeId/badge", {
+// src/routes/get-attendee-badge.ts
+import { z } from "zod";
+async function getAteendeeBadge(app) {
+  app.withTypeProvider().get("/attendees/:attendeeId/badge", {
     schema: {
       summary: "Get attendee badge",
       tags: ["Attendees"],
@@ -24,8 +27,7 @@ export async function getAteendeeBadge(app: FastifyInstance) {
       }
     }
   }, async (request, reply) => {
-    const {attendeeId} = request.params
-
+    const { attendeeId } = request.params;
     const attendee = await prisma.attendee.findUnique({
       select: {
         name: true,
@@ -39,21 +41,21 @@ export async function getAteendeeBadge(app: FastifyInstance) {
       where: {
         id: attendeeId
       }
-    })
-
-    if(!attendee){
-      throw new BadRequest('Attendee not found')
+    });
+    if (!attendee) {
+      throw new BadRequest("Attendee not found");
     }
-
-    const baseURL = `${request.protocol}://${request.hostname}`
-
-    const checkInURL = new URL(`attendees/${attendeeId}/check-in`, baseURL)
-
+    const baseURL = `${request.protocol}://${request.hostname}`;
+    const checkInURL = new URL(`attendees/${attendeeId}/check-in`, baseURL);
     return reply.send({ badge: {
       name: attendee.name,
       email: attendee.email,
       eventTitle: attendee.event.title,
       checkInURL: checkInURL.toString()
-    } })
-  })
+    } });
+  });
 }
+
+export {
+  getAteendeeBadge
+};

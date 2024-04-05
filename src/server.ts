@@ -1,9 +1,11 @@
 import fastify from "fastify";
 
+import fastifyCors from '@fastify/cors';
 import fastifySwagger from "@fastify/swagger";
 
 import fastifySwaggerUi from "@fastify/swagger-ui";
 import { jsonSchemaTransform, serializerCompiler, validatorCompiler } from 'fastify-type-provider-zod';
+import { errorHandler } from "./error-handler";
 import { checkIn } from "./routes/check-in";
 import { createEvent } from "./routes/create-event";
 import { getAteendeeBadge } from "./routes/get-attendee-badge";
@@ -13,6 +15,10 @@ import { registerForEvent } from "./routes/register-for-event";
 
 
 export const app = fastify();
+
+app.register(fastifyCors, {
+  origin: '*',
+})
 
 app.register(fastifySwagger, {
   swagger: {
@@ -41,6 +47,8 @@ app.register(getAteendeeBadge)
 app.register(checkIn)
 app.register(getEventAttendees)
 
-app.listen({ port: 3333 }).then(() => {
+app.setErrorHandler(errorHandler)
+
+app.listen({ port: 3333, host: '0.0.0.0' }).then(() => {
   console.log("Server listening on port 3000");
 })
